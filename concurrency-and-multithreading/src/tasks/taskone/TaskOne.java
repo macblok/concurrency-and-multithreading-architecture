@@ -1,20 +1,26 @@
 package tasks.taskone;
 
-import java.util.ConcurrentModificationException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class UsingHashMap {
+public class TaskOne {
 
     public static void main(String[] args) {
-        Map<Integer, Integer> map = new HashMap<>();
+        TaskOne taskOne = new TaskOne();
+        taskOne.run(new HashMap<>());
+        taskOne.run(new ConcurrentHashMap<>());
+        taskOne.run(Collections.synchronizedMap(new HashMap<>()));
+
+    }
+
+    private void run(Map<Integer, Integer> map) {
 
         Thread thread1 = new Thread(() -> {
            for (int i =0; i < 1000; i++) {
                map.put(i, i);
                try {
-                   Thread.sleep(1);
+                   Thread.sleep(4);
                } catch (InterruptedException e) {
                    System.out.println(e.getMessage());
                }
@@ -25,22 +31,27 @@ public class UsingHashMap {
             try {
                 AtomicInteger currentSum = new AtomicInteger();
                 map.values().forEach(value -> {
-                    System.out.println("Current sum " + currentSum + ", current value: " + value);
+                    System.out.println("Map type: " + map.getClass() + ", Previous sum = " + currentSum + ", current value: = " + value);
                     currentSum.addAndGet(value);
-                    System.out.println(currentSum.get());
+                    System.out.println("Current sum = " + currentSum.get());
                 });
 
             } catch (ConcurrentModificationException e) {
                 System.out.println("Caught ConcurrentModificationException");
             }
+            System.out.println("#".repeat(100));
         });
 
         thread1.start();
+
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
-            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
+
         thread2.start();
     }
 }
+
+//After map implementation exchanging, there is no ConcurrentModificationException exception thrown.
