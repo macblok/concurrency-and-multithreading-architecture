@@ -26,19 +26,9 @@ public class ThreadSafeMapSynchronized<K, V> implements Map {
         return getNodeByKey((K) key) != null;
     }
 
-    private synchronized Node<K, V> getNodeByKey(K key) {
-        return map.stream().filter(n -> n.getKey().equals(key)).findFirst().orElse(null);
-    }
-
-    private synchronized Node<K, V> getNodeByValue(V value) {
-        return map.stream().filter(n -> n.getValue().equals(value)).findFirst().orElse(null);
-    }
-
-
-
     @Override
     public synchronized boolean containsValue(Object value) {
-        return getNodeByValue((V) value) != null;
+        return map.stream().filter(n -> n.getValue().equals(value)).findFirst().orElse(null) != null;
     }
 
     @Override
@@ -95,6 +85,10 @@ public class ThreadSafeMapSynchronized<K, V> implements Map {
     @Override
     public synchronized Set<Map.Entry<K, V>> entrySet() {
         return new HashSet<>(map);
+    }
+
+    private synchronized Node<K, V> getNodeByKey(K key) {
+        return map.stream().filter(n -> n.getKey().equals(key)).findFirst().orElse(null);
     }
 
     private static class Node<K, V> implements Map.Entry<K, V> {
