@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class ThreadSafeMapSynchronized<K, V> implements Map {
 
-    private final List<Node<K, V>> map = new ArrayList();
+    private final List<Node<K, V>> map = new ArrayList(10000);
 
     public synchronized void printValues() {
         map.forEach(System.out::println);
@@ -33,8 +33,8 @@ public class ThreadSafeMapSynchronized<K, V> implements Map {
 
     @Override
     public synchronized V get(Object key) {
-        Node<K, V> n;
-        return (n = getNodeByKey((K) key)) == null ? null : n.getValue();
+        Node<K, V> node;
+        return (node = getNodeByKey((K) key)) == null ? null : node.getValue();
     }
 
     @Override
@@ -91,7 +91,7 @@ public class ThreadSafeMapSynchronized<K, V> implements Map {
         return map.stream().filter(n -> n.getKey().equals(key)).findFirst().orElse(null);
     }
 
-    private static class Node<K, V> implements Map.Entry<K, V> {
+    private class Node<K, V> implements Map.Entry<K, V> {
 
         final K key;
         V value;
