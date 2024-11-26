@@ -26,6 +26,7 @@ public class BlockingObjectPool {
     public synchronized Object get() {
         while (count == 0) {
             try {
+                System.out.println("Pool is empty - waiting for a new object");
                 wait();  // Wait until an object is available
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
@@ -45,6 +46,7 @@ public class BlockingObjectPool {
     public synchronized void take(Object object) {
         while (count == pool.length) {
             try {
+                System.out.println("Pool is full - waiting for a free spot");
                 wait();  // Wait until there's space in the pool
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
