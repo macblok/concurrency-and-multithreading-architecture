@@ -191,12 +191,38 @@ public class TaskOneCustomMapsPerformance {
         }
         //End ThreadSafeMapSynchronized performance test
 
-
-
-
-
-
-
-
     }
+
+    /* Java 8, 11, 13, 17, 21 comparison
+Java8: each map, except HashMapWithLocks throws ConcurrentModificationException
+ThreadSafeMapSynchronized: 300 ms
+ThreadSafeMapWithLocks: 358 ms
+HashMapWithLocks: 9 ms (ConcurrentModificationException thrown)
+AtomicReferenceMap: 264 ms
+
+Java11: each map, except HashMapWithLocks throws ConcurrentModificationException
+ThreadSafeMapSynchronized: 140 ms
+ThreadSafeMapWithLocks: 166 ms
+HashMapWithLocks:
+AtomicReferenceMap: 626 ms
+
+Java13: each map, except HashMapWithLocks throws ConcurrentModificationException
+ThreadSafeMapSynchronized: 250 ms
+ThreadSafeMapWithLocks: 253 ms
+HashMapWithLocks: 2 ms (ConcurrentModificationException thrown)
+AtomicReferenceMap: 632 ms
+
+Java17: no ConcurrentModificationException is thrown
+ThreadSafeMapSynchronized: 135 ms
+ThreadSafeMapWithLocks: 178 ms
+HashMapWithLocks: 2 ms
+AtomicReferenceMap: 544 ms
+
+Java21: no ConcurrentModificationException is thrown
+ThreadSafeMapSynchronized: 144 ms
+ThreadSafeMapWithLocks: 179 ms
+HashMapWithLocks: 1 ms
+AtomicReferenceMap: 506 ms
+ */
+
 }
