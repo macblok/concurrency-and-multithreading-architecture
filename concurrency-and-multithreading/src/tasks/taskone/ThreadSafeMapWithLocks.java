@@ -3,10 +3,11 @@ package tasks.taskone;
 import java.util.*;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.stream.Collectors;
 
-public class ThreadSafeMapWithoutSynchronization<K, V> implements Map {
+public class ThreadSafeMapWithLocks<K, V> implements Map {
 
-    private final List<Node<K, V>> map = new ArrayList(10000);
+    private final List<Node<K, V>> map = new ArrayList(100_000);
 
     private final ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
     private final Lock readLock = lock.readLock();
@@ -48,7 +49,7 @@ public class ThreadSafeMapWithoutSynchronization<K, V> implements Map {
 
     @Override
     public int size() {
-        return 0;
+        return map.size();
     }
 
     @Override
@@ -88,7 +89,7 @@ public class ThreadSafeMapWithoutSynchronization<K, V> implements Map {
 
     @Override
     public Collection values() {
-        return List.of();
+        return map.stream().map(Node::getValue).collect(Collectors.toList());
     }
 
     @Override

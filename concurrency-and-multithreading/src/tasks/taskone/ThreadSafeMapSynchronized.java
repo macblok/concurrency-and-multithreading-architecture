@@ -79,7 +79,7 @@ public class ThreadSafeMapSynchronized<K, V> implements Map {
 
     @Override
     public synchronized Collection<V> values() {
-        return map.stream().map(n -> n.getValue()).collect(Collectors.toList());
+        return map.stream().map(Node::getValue).collect(Collectors.toList());
     }
 
     @Override
