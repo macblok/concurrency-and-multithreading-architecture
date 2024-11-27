@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 public class ThreadSafeMapSynchronized<K, V> implements Map {
 
-    private final List<Node<K, V>> map = new ArrayList(10000);
+    private final List<Node<K, V>> map = new ArrayList(100_000);
 
     public synchronized void printValues() {
         map.forEach(System.out::println);

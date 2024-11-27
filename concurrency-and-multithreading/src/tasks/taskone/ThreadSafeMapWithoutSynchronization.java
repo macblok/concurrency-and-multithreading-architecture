@@ -22,16 +22,6 @@ public class ThreadSafeMapWithoutSynchronization<K, V> implements Map {
     public V put(Object key, Object value) {
         writeLock.lock();
         try {
-
-
-            try {
-                System.out.println("put break 5 seconds: key-" + key + " value-" + value);
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-
             var node = getNodeByKey((K) key);
             if (node != null) {
                 V oldValue = node.getValue();
