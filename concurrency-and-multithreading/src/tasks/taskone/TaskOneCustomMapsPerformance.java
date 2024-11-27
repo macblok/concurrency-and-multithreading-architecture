@@ -7,9 +7,9 @@ public class TaskOneCustomMapsPerformance {
     public static void main(String[] args) throws InterruptedException {
 
         Map<Integer, Integer> synchronizedMap = new ThreadSafeMapSynchronized<>();
-        Map<Integer, Integer> withoutSynchronizationMap = new AnotherMap<>();
+        Map<Integer, Integer> withoutSynchronizationMap = new ThreadSafeMapWithoutSynchronization<>();
 
-        int numbers = 100;
+        int numbers = 100_000;
         int summingIterations = 100;
 
         Thread thread1SynchronizedMap = new Thread(() -> {
