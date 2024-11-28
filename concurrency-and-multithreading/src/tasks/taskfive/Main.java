@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
+        //TODO rewrite whole task 5
+
         String directoryPath = "accounts";
 
         // First, generate the sample account file
