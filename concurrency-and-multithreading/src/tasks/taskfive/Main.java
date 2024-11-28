@@ -1,10 +1,10 @@
 package tasks.taskfive;
 
+import tasks.taskfive.dao.FileAccountDAO;
+import tasks.taskfive.model.Currency;
 import tasks.taskfive.model.ExchangeRate;
 import tasks.taskfive.module.CurrencyExchangeModule;
-import tasks.taskfive.model.Currency;
 import tasks.taskfive.service.AccountService;
-import tasks.taskfive.dao.FileAccountDAO;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -31,10 +31,31 @@ public class Main {
 
         CurrencyExchangeModule exchangeModule = new CurrencyExchangeModule(accountService, exchangeRates);
 
+        // Load and print initial state of the account
+        System.out.println("Initial account state:");
+        printAccountState(accountDao.getAccount("12345"));
+
         // Suppose the user wants to perform a currency exchange
         exchangeModule.exchangeCurrency("12345", usd, eur, new BigDecimal("100"));
 
+        // Let the exchanges process
+        try {
+            Thread.sleep(2000);  // Pause to allow currency exchange tasks to complete
+        } catch (InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
+
+        // Print the updated state of the account
+        System.out.println("Updated account state:");
+        printAccountState(accountDao.getAccount("12345"));
+
         // Properly shutdown the executor in CurrencyExchangeModule
         exchangeModule.shutdown();
+    }
+
+    private static void printAccountState(tasks.taskfive.model.Account account) {
+        account.getBalances().forEach((currency, amount) ->
+                System.out.println(currency.getCode() + ": " + amount)
+        );
     }
 }

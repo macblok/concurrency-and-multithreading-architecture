@@ -31,6 +31,6 @@ public class FileAccountDAO implements AccountDAO {
     }
 
     private String getAccountFilePath(String accountId) {
-        return directoryPath + File.separator + accountId + ".dat";
+        return directoryPath + File.separator + accountId + ".acc";
     }
 }

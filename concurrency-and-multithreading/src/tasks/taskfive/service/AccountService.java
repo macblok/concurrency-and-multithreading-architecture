@@ -29,7 +29,7 @@ public class AccountService {
                 throw new AccountNotFoundException("Account not found: " + accountId);
             }
             account.getBalances().merge(currency, amount, BigDecimal::add);
-            accountDao.saveAccount(account);
+            persistAccount(account);
             logger.info("Deposited " + amount + " " + currency.getCode() + " to account ID " + accountId);
         } finally {
             writeLock.unlock();
@@ -49,10 +49,14 @@ public class AccountService {
                 throw new InsufficientFundsException("Insufficient funds for withdrawal");
             }
             account.getBalances().put(currency, currentBalance.subtract(amount));
-            accountDao.saveAccount(account);
+            persistAccount(account);
             logger.info("Withdrew " + amount + " " + currency.getCode() + " from account ID " + accountId);
         } finally {
             writeLock.unlock();
         }
+    }
+
+    private void persistAccount(Account account) {
+        accountDao.saveAccount(account);
     }
 }
